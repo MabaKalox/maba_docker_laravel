@@ -1,0 +1,86 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    image: maba_kalox_laravel
+    container_name: laravel_app
+    #    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - db
+      - db_migrate
+    command: >
+      sh -c "php artisan key:generate &&
+             php artisan config:cache &&
+             php-fpm"
+
+  db_migrate:
+    image: maba_kalox_laravel
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    depends_on:
+      - db
+    command: wait-for-it.sh db:3306 -t 120 -- php artisan migrate
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: laravel_webserver
+    #    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+    volumes:
+      - ./:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - app
+
+  #MySQL Service
+  db:
+    image: mysql:latest
+    container_name: laravel_db
+    #    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: your_mysql_root_password
+      MYSQL_DATABASE: laravel
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - app-network
+    volumes:
+      - laravel_dbdata:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/init/init-laravel.sql:/docker-entrypoint-initdb.d/init-laravel.sql
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  laravel_dbdata: { }
