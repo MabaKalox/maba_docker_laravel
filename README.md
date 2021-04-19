@@ -39,7 +39,6 @@ cp .env.example .env
 Build docker images
 
 ```
-cd ./maba_docker_laravel
 docker-compose build
 ```
 
