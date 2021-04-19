@@ -28,7 +28,7 @@ services:
     image: maba_kalox_laravel
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: .Dockerfile
     working_dir: /var/www
     networks:
       - app-network
