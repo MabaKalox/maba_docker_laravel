@@ -31,6 +31,11 @@ Install laravel
 docker run --rm -v $(pwd):/app --user $UID:$GID composer install
 ```
 
+Copy example environment file (optionally - modify)
+```
+cp .env.example .env
+```
+
 Build docker images
 
 ```
