@@ -37,6 +37,7 @@ docker run --rm -v ${pwd}:/app composer install
 ```
 
 Copy example environment file (optionally - modify)
+`linux || windows powershell`
 ```
 cp .env.example .env
 ```
