@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('game/show', function () {
+    return 'The list of games';
+});
+Route::get('game/{game}', function ($game) {
+    return 'Game statistics';
+});
+
+Route::resource('course', "CourseController", ['only' => ['index', 'create', 'store', 'show', 'destroy']]);
+
+Route::get('course', 'CourseController@index');
+Route::get('course/create', 'CourseController@create');

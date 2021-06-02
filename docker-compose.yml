@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
 
   #PHP Service
@@ -37,7 +37,7 @@ services:
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     depends_on:
       - db
-    command: wait-for-it.sh db:3306 -t 120 -- php artisan migrate
+    command: wait-for-it.sh db:3316 -t 120 -- php artisan migrate
 
   #Nginx Service
   webserver:
@@ -63,7 +63,7 @@ services:
     #    restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - "3316:3306"
     environment:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: your_mysql_root_password

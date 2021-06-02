@@ -27,8 +27,13 @@ cd ./maba_docker_laravel
 ```
 
 Install laravel
+`linux`
 ```
 docker run --rm -v $(pwd):/app --user $UID:$GID composer install
+```
+`windows powershell`
+```
+docker run --rm -v ${pwd}:/app composer install
 ```
 
 Copy example environment file (optionally - modify)
