@@ -73,7 +73,7 @@ services:
     networks:
       - app-network
     volumes:
-      - laravel_dbdata:/var/lib/mysql
+      - laravel_dbdata:/var/lib/mysql-files
       - ./mysql/my.cnf:/etc/mysql/my.cnf
       - ./mysql/init/init-laravel.sql:/docker-entrypoint-initdb.d/init-laravel.sql
 
